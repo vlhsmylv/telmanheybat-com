@@ -8,16 +8,14 @@
  * @tutorial    TraversyMedia https://www.youtube.com/watch?v=POX3dT-pB4E&t=307s
  */
 
-
 class typeWriting {
-
   constructor(element) {
     this.element = element; // Selector
-    this.words = JSON.parse(element.getAttribute('data-words')); // Input words
-    this.speed = parseInt(element.getAttribute('data-speed'), 10) || 100; // fallback 100 ms
-    this.delay = parseInt(element.getAttribute('data-delay'), 10) || 1000; // fallback 1000 ms
-    this.loop = element.getAttribute('data-loop');
-    this.char = ''; // word letters
+    this.words = JSON.parse(element.getAttribute("data-words")); // Input words
+    this.speed = parseInt(element.getAttribute("data-speed"), 10) || 100; // fallback 100 ms
+    this.delay = parseInt(element.getAttribute("data-delay"), 10) || 1000; // fallback 1000 ms
+    this.loop = element.getAttribute("data-loop");
+    this.char = ""; // word letters
     this.counter = 0; // loop counter
     this.isDeleting = false; // check when deleting letters
     this.type(); // Typing method
@@ -25,7 +23,8 @@ class typeWriting {
 
   type() {
     // Set the words index.
-    const index = this.loop === 'yes' ? this.counter % this.words.length : this.counter;
+    const index =
+      this.loop === "yes" ? this.counter % this.words.length : this.counter;
     // Get the full word
     const fullWord = this.words[index];
     // Typing speed
@@ -41,7 +40,11 @@ class typeWriting {
       this.char = fullWord.substring(0, this.char.length + 1);
     }
     // Display on DOM
-    this.element.innerHTML = `<span class="write">${this.char}</span><span class="blinking-cursor">|</span>`;
+    this.element.innerHTML = `<span class="write">${
+      this.char === "stylist"
+        ? `<a href="/stylist" target="_blank">${this.char}</a>`
+        : this.char
+    }</span><span class="blinking-cursor">|</span>`;
     // When word is completed
     if (!this.isDeleting && this.char === fullWord) {
       // break the loop before deletion.
@@ -52,21 +55,19 @@ class typeWriting {
       this.isDeleting = true;
       // Set time delay before new word
       typeSpeed = this.delay;
-    } else if (this.isDeleting && this.char === '') {
+    } else if (this.isDeleting && this.char === "") {
       this.isDeleting = false;
       // Move to next word
       this.counter++;
     }
     // Set time out
     setTimeout(() => this.type(), typeSpeed);
-
   }
-
 }
 
 // Call the class on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', init)
+document.addEventListener("DOMContentLoaded", init);
 // Select all elements and trigger the class
 function init() {
-  document.querySelectorAll('.typewrite').forEach(e => new typeWriting(e));
+  document.querySelectorAll(".typewrite").forEach((e) => new typeWriting(e));
 }
